@@ -65,7 +65,7 @@ export default function CreditPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">Secondary vertical · same engine</p>
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">Secondary vertical · same engine</p>
       <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Consumer Credit Line Eligibility</h1>
       <p className="mt-3 text-neutral-400">
         The identical policy engine that evaluates FAssets agents, applied to a wallet instead. Proof this is a
@@ -79,7 +79,7 @@ export default function CreditPage() {
       ) : (
         <>
           <section className="mt-10 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
-            <p className="text-xs font-medium uppercase tracking-wide text-emerald-400">Public · read live from chain</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-blush">Public · read live from chain</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Stat
                 label="Wallet C2FLR balance"
@@ -102,12 +102,12 @@ export default function CreditPage() {
               value={requestedCredit}
               onChange={(e) => setRequestedCredit(e.target.value)}
               inputMode="decimal"
-              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
             />
           </section>
 
           <section className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
-            <p className="text-xs font-medium uppercase tracking-wide text-emerald-400">
+            <p className="text-xs font-medium uppercase tracking-wide text-blush">
               Private · never published, only its hash
             </p>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -117,7 +117,7 @@ export default function CreditPage() {
                   value={privateIncome}
                   onChange={(e) => setPrivateIncome(e.target.value)}
                   inputMode="decimal"
-                  className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
                 />
               </div>
               <div>
@@ -126,7 +126,7 @@ export default function CreditPage() {
                   value={privateLiabilities}
                   onChange={(e) => setPrivateLiabilities(e.target.value)}
                   inputMode="decimal"
-                  className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+                  className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
                 />
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function CreditPage() {
             <section className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
               <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Local preview of the policy result</p>
               <div className="mt-4 flex items-baseline gap-3">
-                <span className={`text-2xl font-semibold ${preview.passes ? "text-emerald-400" : "text-red-400"}`}>
+                <span className={`text-2xl font-semibold ${preview.passes ? "text-blush" : "text-red-400"}`}>
                   {preview.passes ? "PASS" : "FAIL"}
                 </span>
                 {preview.passes && <span className="text-lg text-neutral-400">tier {preview.tier}</span>}
@@ -152,7 +152,7 @@ export default function CreditPage() {
             <button
               onClick={handleSubmit}
               disabled={isPending || receipt.isLoading || !preview}
-              className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-amaranth px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isPending ? "Confirm in wallet…" : receipt.isLoading ? "Waiting for confirmation…" : "Request Attestation On-Chain"}
             </button>
@@ -161,7 +161,7 @@ export default function CreditPage() {
               <div className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 text-sm">
                 <p className="text-neutral-300">
                   Instruction sent:{" "}
-                  <a href={explorerTx(txHash)} target="_blank" rel="noreferrer" className="font-mono text-emerald-400 hover:underline">
+                  <a href={explorerTx(txHash)} target="_blank" rel="noreferrer" className="font-mono text-blush hover:underline">
                     {txHash.slice(0, 10)}…{txHash.slice(-8)}
                   </a>
                 </p>
@@ -179,7 +179,7 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-3">
       <div className="flex items-center justify-between">
         <span className="text-xs text-neutral-500">{label}</span>
-        <span className="rounded bg-emerald-950 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-400">
+        <span className="rounded bg-amaranth/15 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-blush">
           live
         </span>
       </div>

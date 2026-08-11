@@ -98,7 +98,7 @@ export default function FassetsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">Flagship · Bounty 1 + 2</p>
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">Flagship · Bounty 1 + 2</p>
       <h1 className="mt-2 text-3xl font-semibold text-neutral-50">FAssets Agent Solvency Attestation</h1>
       <p className="mt-3 text-neutral-400">
         Prove a FAssets agent meets a collateral-adequacy policy without publishing its full treasury.
@@ -109,11 +109,11 @@ export default function FassetsPage() {
         <input
           value={agentVault}
           onChange={(e) => setAgentVault(e.target.value.trim())}
-          className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+          className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
         />
         <p className="mt-2 text-xs text-neutral-500">
           Pre-filled with a real, live, publicly-available agent on Coston2 (
-          <a href={explorerAddr(EXAMPLE_AGENT_VAULT)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
+          <a href={explorerAddr(EXAMPLE_AGENT_VAULT)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
             view on explorer
           </a>
           ), found via <code className="text-neutral-400">AssetManagerFXRP.getAllAgents()</code>. Paste any other real
@@ -174,7 +174,7 @@ export default function FassetsPage() {
       </section>
 
       <section className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-wide text-emerald-400">
+        <p className="text-xs font-medium uppercase tracking-wide text-blush">
           Private · never published, only its hash
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -186,7 +186,7 @@ export default function FassetsPage() {
               value={privateReserve}
               onChange={(e) => setPrivateReserve(e.target.value)}
               inputMode="decimal"
-              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
             />
           </div>
           <div>
@@ -197,7 +197,7 @@ export default function FassetsPage() {
               value={privateLiabilities}
               onChange={(e) => setPrivateLiabilities(e.target.value)}
               inputMode="decimal"
-              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+              className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
             />
           </div>
         </div>
@@ -211,7 +211,7 @@ export default function FassetsPage() {
             page, once the instruction below is processed.
           </p>
           <div className="mt-4 flex items-baseline gap-3">
-            <span className={`text-2xl font-semibold ${preview.passes ? "text-emerald-400" : "text-red-400"}`}>
+            <span className={`text-2xl font-semibold ${preview.passes ? "text-blush" : "text-red-400"}`}>
               {preview.passes ? "PASS" : "FAIL"}
             </span>
             {preview.passes && <span className="text-lg text-neutral-400">tier {preview.tier}</span>}
@@ -230,7 +230,7 @@ export default function FassetsPage() {
           <button
             onClick={handleSubmit}
             disabled={isPending || receipt.isLoading || !preview}
-            className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-amaranth px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? "Confirm in wallet…" : receipt.isLoading ? "Waiting for confirmation…" : "Request Attestation On-Chain"}
           </button>
@@ -240,7 +240,7 @@ export default function FassetsPage() {
           <div className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 text-sm">
             <p className="text-neutral-300">
               Instruction sent:{" "}
-              <a href={explorerTx(txHash)} target="_blank" rel="noreferrer" className="font-mono text-emerald-400 hover:underline">
+              <a href={explorerTx(txHash)} target="_blank" rel="noreferrer" className="font-mono text-blush hover:underline">
                 {txHash.slice(0, 10)}…{txHash.slice(-8)}
               </a>
             </p>
@@ -252,7 +252,7 @@ export default function FassetsPage() {
                   href="https://github.com/angelraph/Solvra/blob/main/docs/deployments.md"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-emerald-400 hover:underline"
+                  className="text-blush hover:underline"
                 >
                   docs/deployments.md
                 </a>{" "}
@@ -272,7 +272,7 @@ function Stat({ label, value, live, mono }: { label: string; value: string; live
       <div className="flex items-center justify-between">
         <span className="text-xs text-neutral-500">{label}</span>
         {live && (
-          <span className="rounded bg-emerald-950 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-400">
+          <span className="rounded bg-amaranth/15 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-blush">
             live
           </span>
         )}

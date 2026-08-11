@@ -13,7 +13,7 @@ function CodeBlock({ children }: { children: string }) {
 export default function DevelopersPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">Ask Without Seeing</p>
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">Ask Without Seeing</p>
       <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Build on Solvra</h1>
       <p className="mt-3 text-neutral-400">
         There&apos;s no hosted REST API yet. That would just be a thin wrapper around the calls below, and it felt
@@ -25,7 +25,7 @@ export default function DevelopersPage() {
         <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">1. Request an evaluation</h2>
         <p className="mt-2 text-sm text-neutral-400">
           Call{" "}
-          <a href={explorerAddr(CONTRACTS.solvraInstructionSender.address)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
+          <a href={explorerAddr(CONTRACTS.solvraInstructionSender.address)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
             SolvraInstructionSender
           </a>
           . This is the real function the /credit page calls when you click &quot;Request Attestation.&quot;
@@ -56,7 +56,7 @@ await writeContract(config, {
         </h2>
         <p className="mt-2 text-sm text-neutral-400">
           One view call against{" "}
-          <a href={explorerAddr(CONTRACTS.attestationRegistry.address)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
+          <a href={explorerAddr(CONTRACTS.attestationRegistry.address)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
             AttestationRegistry
           </a>
           . No income figures, no liability figures, no reserve breakdown. Just PASS/FAIL and a tier. This is the
@@ -77,7 +77,7 @@ const [passed, tier, validUntil] = await readContract(config, {
         <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">3. Register your own policy</h2>
         <p className="mt-2 text-sm text-neutral-400">
           Anyone can register a new policy on the shared{" "}
-          <a href={explorerAddr(CONTRACTS.policyRegistry.address)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
+          <a href={explorerAddr(CONTRACTS.policyRegistry.address)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
             PolicyRegistry
           </a>
           , which is what makes Solvra a protocol rather than a single app. Evaluating a genuinely new policy still
@@ -105,7 +105,7 @@ const [passed, tier, validUntil] = await readContract(config, {
             href="https://github.com/angelraph/Solvra"
             target="_blank"
             rel="noreferrer"
-            className="text-emerald-400 hover:underline"
+            className="text-blush hover:underline"
           >
             github.com/angelraph/Solvra
           </a>

@@ -28,11 +28,11 @@ export default function RelyingPartyPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">Consumption side</p>
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">Consumption side</p>
       <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Relying Party Gate</h1>
       <p className="mt-3 text-neutral-400">
         This is what a lender, insurer, or governance dashboard does with Solvra: one read call against{" "}
-        <a href={explorerAddr(CONTRACTS.attestationRegistry.address)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
+        <a href={explorerAddr(CONTRACTS.attestationRegistry.address)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
           AttestationRegistry
         </a>
         .isValid(subject, policyId). Nothing else. No access to the private inputs that produced the answer.
@@ -44,7 +44,7 @@ export default function RelyingPartyPage() {
           value={subject}
           onChange={(e) => setSubject(e.target.value.trim())}
           placeholder="0x…"
-          className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-100 focus:border-emerald-500 focus:outline-none"
+          className="mt-2 w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-100 focus:border-amaranth focus:outline-none"
         />
 
         <label className="mt-4 block text-xs font-medium uppercase tracking-wide text-neutral-500">Policy</label>
@@ -55,7 +55,7 @@ export default function RelyingPartyPage() {
               onClick={() => setPolicyId(p.id)}
               className={`rounded-lg border px-3 py-1.5 text-sm transition ${
                 policyId === p.id
-                  ? "border-emerald-500 bg-emerald-950/40 text-emerald-300"
+                  ? "border-amaranth bg-amaranth/15 text-blush"
                   : "border-neutral-700 text-neutral-400 hover:border-neutral-500"
               }`}
             >
@@ -71,7 +71,7 @@ export default function RelyingPartyPage() {
           {data && (
             <>
               <div className="flex items-baseline gap-3">
-                <span className={`text-2xl font-semibold ${passed ? "text-emerald-400" : "text-neutral-500"}`}>
+                <span className={`text-2xl font-semibold ${passed ? "text-blush" : "text-neutral-500"}`}>
                   {passed ? "ACCESS GRANTED" : "NO VALID ATTESTATION"}
                 </span>
               </div>

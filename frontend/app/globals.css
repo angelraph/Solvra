@@ -1,14 +1,34 @@
 @import "tailwindcss";
 
+/*
+ * Flare's own brand palette (Amaranth / Deep Blush / Shark), applied to
+ * Solvra's own distinct design — never Flare's logo, per direction. Colors
+ * per Flare's published brand assets: Amaranth #E62058, Deep Blush #E46389,
+ * Shark #24292E.
+ *
+ * Typography: Flare's brand uses Satoshi for headings (freely licensed via
+ * Fontshare, used as-is) and ABC Monument Grotesk for body text. ABC
+ * Monument Grotesk is a commercial font from ABC Dinamo with no free
+ * license, so it isn't embedded here — General Sans (also free via
+ * Fontshare, same type family ecosystem as Satoshi) stands in for body text
+ * instead. See app/layout.tsx for the font loading.
+ */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-amaranth: #e62058;
+  --color-blush: #e46389;
+  --color-shark: #24292e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-amaranth: var(--color-amaranth);
+  --color-blush: var(--color-blush);
+  --color-shark: var(--color-shark);
+  --font-sans: "General Sans", Arial, Helvetica, sans-serif;
+  --font-heading: "Satoshi", Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -22,5 +42,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }

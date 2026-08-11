@@ -27,7 +27,7 @@ function PolicyCard({ policyId }: { policyId: string }) {
         {p && (
           <span
             className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
-              p.active ? "bg-emerald-950 text-emerald-400" : "bg-red-950 text-red-400"
+              p.active ? "bg-amaranth/15 text-blush" : "bg-red-950 text-red-400"
             }`}
           >
             {p.active ? "active" : "inactive"}
@@ -58,7 +58,7 @@ function Row({ label, value, mono, href }: { label: string; value: string; mono?
       <dt className="text-xs text-neutral-500">{label}</dt>
       <dd className={`min-w-0 break-all text-neutral-200 ${mono ? "font-mono text-xs" : ""}`}>
         {href ? (
-          <a href={href} target="_blank" rel="noreferrer" className="break-all text-emerald-400 hover:underline">
+          <a href={href} target="_blank" rel="noreferrer" className="break-all text-blush hover:underline">
             {value}
           </a>
         ) : (
@@ -72,7 +72,7 @@ function Row({ label, value, mono, href }: { label: string; value: string; mono?
 export default function TrustPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">Trust Center</p>
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">Trust Center</p>
       <h1 className="mt-2 text-3xl font-semibold text-neutral-50">What&apos;s real, what&apos;s pending</h1>
       <p className="mt-3 text-neutral-400">
         Per the hackathon&apos;s own checklist: be clear about what is real, mocked, trusted, or still incomplete. No
@@ -129,7 +129,7 @@ export default function TrustPage() {
           href={explorerAddr(CONTRACTS.attestationRegistry.address)}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 inline-block text-sm text-emerald-400 hover:underline"
+          className="mt-3 inline-block text-sm text-blush hover:underline"
         >
           View AttestationRegistry on Coston2 Explorer →
         </a>
@@ -149,7 +149,7 @@ export default function TrustPage() {
 function StatusRow({ ok, title, detail }: { ok?: boolean; title: string; detail: string }) {
   return (
     <div className="flex gap-3 rounded-lg border border-neutral-800 bg-neutral-900/30 p-4">
-      <span className={`mt-0.5 text-lg ${ok ? "text-emerald-400" : "text-amber-400"}`}>{ok ? "✓" : "○"}</span>
+      <span className={`mt-0.5 text-lg ${ok ? "text-blush" : "text-amber-400"}`}>{ok ? "✓" : "○"}</span>
       <div>
         <p className="text-sm font-medium text-neutral-200">{title}</p>
         <p className="mt-0.5 text-xs text-neutral-500">{detail}</p>

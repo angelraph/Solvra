@@ -1,5 +1,13 @@
 # Solvra — Deployments
 
+## Frontend
+
+Live: **https://frontend-six-rho-47.vercel.app**
+
+Next.js app, all 6 pages (landing, `/fassets`, `/credit`, `/relying-party`,
+`/trust`, `/developers`) reading real data from the Coston2 contracts below.
+Wallet connection via wagmi (injected wallets + WalletConnect).
+
 ## Coston2 (Flare testnet, chain ID 114)
 
 Deployed 2026-08-11 via `extension/scripts/pre-build.sh` against Flare's live

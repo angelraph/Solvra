@@ -21,7 +21,7 @@ const explorerUrl = (address: string) =>
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <p className="text-sm font-medium uppercase tracking-widest text-emerald-400">
+      <p className="text-sm font-medium uppercase tracking-widest text-blush">
         Confidential Compute · Flare Summer Signal
       </p>
       <h1 className="mt-4 text-4xl font-semibold tracking-tight text-neutral-50 sm:text-5xl">
@@ -38,7 +38,7 @@ export default function HomePage() {
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
           href="/fassets"
-          className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-emerald-400"
+          className="rounded-lg bg-amaranth px-5 py-2.5 text-sm font-medium text-neutral-950 transition hover:bg-blush"
         >
           Try the flagship: FAssets Agent Solvency
         </Link>
@@ -76,7 +76,7 @@ export default function HomePage() {
             },
           ].map((item) => (
             <div key={item.tier} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
-              <p className="text-sm font-medium text-emerald-400">{item.tier}</p>
+              <p className="text-sm font-medium text-blush">{item.tier}</p>
               <p className="mt-2 text-sm text-neutral-400">{item.detail}</p>
             </div>
           ))}
@@ -104,7 +104,7 @@ export default function HomePage() {
         <p className="mt-3 text-sm text-neutral-500">
           Full deployment record with transaction hashes:{" "}
           <a
-            className="text-emerald-400 hover:underline"
+            className="text-blush hover:underline"
             href="https://github.com/angelraph/Solvra/blob/main/docs/deployments.md"
             target="_blank"
             rel="noreferrer"
