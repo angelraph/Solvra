@@ -1,11 +1,17 @@
-# Force LF line endings for anything that gets executed as a script or parsed by
-# tools that choke on \r (shebangs especially). This repo mixes a Windows dev
-# machine with a Linux-only build (WSL/Docker), so without this, checking the
-# repo out on Windows silently reintroduces CRLF and breaks every shell script's
-# shebang line ("/usr/bin/env: 'bash\r': No such file or directory").
-*.sh text eol=lf
-*.toml text eol=lf
-*.sol text eol=lf
-*.go text eol=lf
-Dockerfile text eol=lf
-.env.example text eol=lf
+# Force LF line endings repo-wide. This project is developed on a Windows
+# machine but built/run through WSL and Docker (Linux-only tooling), and
+# Windows git's core.autocrlf silently reintroducing CRLF breaks shell
+# script shebangs and causes Windows-git/WSL-git to disagree about what's
+# "clean" (git submodule/forge install operations refuse to run against a
+# dirty tree caused entirely by line-ending drift, not real changes).
+* text=auto eol=lf
+
+# Binary files — never touch line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
