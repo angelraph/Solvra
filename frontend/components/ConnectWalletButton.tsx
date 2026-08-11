@@ -7,28 +7,26 @@ function shortenAddress(address: string): string {
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
-/** Real wagmi wallet connection: injected (MetaMask, Rabby, etc.) or WalletConnect. */
+/** A single, clean connect button for the browser's injected wallet — no
+ * sprawling multi-wallet modal, just what's actually installed. */
 export function ConnectWalletButton() {
   const { address, isConnected, chainId } = useAccount();
   const { connect, connectors, isPending, error } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: isSwitching } = useSwitchChain();
 
+  const connector = connectors[0];
+
   if (!isConnected) {
     return (
       <div className="flex flex-col items-end gap-1">
-        <div className="flex gap-2">
-          {connectors.map((connector) => (
-            <button
-              key={connector.uid}
-              onClick={() => connect({ connector })}
-              disabled={isPending}
-              className="rounded-lg bg-amaranth px-4 py-2 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isPending ? "Connecting…" : connector.name}
-            </button>
-          ))}
-        </div>
+        <button
+          onClick={() => connector && connect({ connector })}
+          disabled={isPending || !connector}
+          className="rounded-lg bg-amaranth px-4 py-2 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isPending ? "Connecting…" : "Connect Wallet"}
+        </button>
         {error && <span className="max-w-64 text-right text-xs text-red-400">{error.message}</span>}
       </div>
     );
