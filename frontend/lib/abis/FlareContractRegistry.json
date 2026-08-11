@@ -1,0 +1,9 @@
+[
+  {
+    "type": "function",
+    "name": "getContractAddressByName",
+    "inputs": [{ "name": "_name", "type": "string" }],
+    "outputs": [{ "name": "", "type": "address" }],
+    "stateMutability": "view"
+  }
+]

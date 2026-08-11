@@ -1,0 +1,13 @@
+[
+  {
+    "type": "function",
+    "name": "getFeedById",
+    "inputs": [{ "name": "_feedId", "type": "bytes21" }],
+    "outputs": [
+      { "name": "_value", "type": "uint256" },
+      { "name": "_decimals", "type": "int8" },
+      { "name": "_timestamp", "type": "uint64" }
+    ],
+    "stateMutability": "payable"
+  }
+]

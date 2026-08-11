@@ -1,0 +1,12 @@
+[
+  {
+    "type": "function",
+    "name": "getFeedId",
+    "inputs": [
+      { "name": "_category", "type": "uint8" },
+      { "name": "_name", "type": "string" }
+    ],
+    "outputs": [{ "name": "", "type": "bytes21" }],
+    "stateMutability": "pure"
+  }
+]

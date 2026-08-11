@@ -1,0 +1,252 @@
+[
+  {
+    "type": "function",
+    "name": "getAgentInfo",
+    "inputs": [
+      {
+        "name": "_agentVault",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct AgentInfo.Info",
+        "components": [
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum AgentInfo.Status"
+          },
+          {
+            "name": "ownerManagementAddress",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "ownerWorkAddress",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralPool",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "collateralPoolToken",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "underlyingAddressString",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "publiclyAvailable",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "feeBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "poolFeeShareBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "vaultCollateralToken",
+            "type": "address",
+            "internalType": "contract IERC20"
+          },
+          {
+            "name": "mintingVaultCollateralRatioBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "mintingPoolCollateralRatioBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "freeCollateralLots",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "totalVaultCollateralWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "freeVaultCollateralWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "vaultCollateralRatioBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "poolWNatToken",
+            "type": "address",
+            "internalType": "contract IERC20"
+          },
+          {
+            "name": "totalPoolCollateralNATWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "freePoolCollateralNATWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "poolCollateralRatioBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "totalAgentPoolTokensWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "announcedVaultCollateralWithdrawalWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "announcedPoolTokensWithdrawalWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "freeAgentPoolTokensWei",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "mintedUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "reservedUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "redeemingUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "poolRedeemingUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "dustUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liquidationStartTimestamp",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxLiquidationAmountUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liquidationPaymentFactorVaultBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "liquidationPaymentFactorPoolBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "underlyingBalanceUBA",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "requiredUnderlyingBalanceUBA",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "freeUnderlyingBalanceUBA",
+            "type": "int256",
+            "internalType": "int256"
+          },
+          {
+            "name": "announcedUnderlyingWithdrawalId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "buyFAssetByAgentFactorBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "poolExitCollateralRatioBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "redemptionPoolFeeShareBIPS",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getAllAgents",
+    "inputs": [
+      {
+        "name": "_start",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_end",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "_agents",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "_totalLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]
