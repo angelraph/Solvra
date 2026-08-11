@@ -23,6 +23,18 @@ contract SolvraInstructionSender {
     // forge-lint: disable-next-line(unsafe-typecast)
     bytes32 public constant OP_COMMAND_SAY_GOODBYE = bytes32("SAY_GOODBYE");
 
+    /// @notice Operation type for confidential policy attestations.
+    // forge-lint: disable-next-line(unsafe-typecast)
+    bytes32 public constant OP_TYPE_ATTESTATION = bytes32("ATTESTATION");
+
+    /// @notice Command for evaluating a FAssets agent's collateral solvency policy.
+    // forge-lint: disable-next-line(unsafe-typecast)
+    bytes32 public constant OP_COMMAND_EVALUATE_FASSETS_AGENT_SOLVENCY = bytes32("EVALUATE_FASSETS_AGENT_SOLVENCY");
+
+    /// @notice Command for evaluating a consumer credit-line eligibility policy.
+    // forge-lint: disable-next-line(unsafe-typecast)
+    bytes32 public constant OP_COMMAND_EVALUATE_CONSUMER_CREDIT = bytes32("EVALUATE_CONSUMER_CREDIT");
+
     /// @notice Reference to the TEE extension registry contract.
     ITeeExtensionRegistry public immutable TEE_EXTENSION_REGISTRY;
     /// @notice Reference to the TEE machine registry contract.
@@ -103,6 +115,51 @@ contract SolvraInstructionSender {
             opType: OP_TYPE_GREETING,
             opCommand: OP_COMMAND_SAY_GOODBYE,
             message: abi.encode(SayGoodbyeMessage({name: _name, reason: _reason})),
+            cosigners: cosigners,
+            cosignersThreshold: 0,
+            claimBackAddress: msg.sender
+        });
+
+        TEE_EXTENSION_REGISTRY.sendInstructions{value: msg.value}(
+            teeIds,
+            params
+        );
+    }
+
+    /// @notice Sends an EVALUATE_FASSETS_AGENT_SOLVENCY instruction to the TEE.
+    /// @param _message JSON-encoded payload (agentVault, onChainCollateralRatioBips,
+    /// mintedFAssetValueUsd, fdcAttestedXrplReserveXrp, ftsoXrpUsdPrice,
+    /// privateSupplementaryReserveUsd, privateUndisclosedLiabilitiesUsd).
+    function sendEvaluateFassetsAgentSolvency(bytes calldata _message) external payable {
+        address[] memory teeIds = TEE_MACHINE_REGISTRY.getRandomTeeIds(_getExtensionId(), 1);
+        address[] memory cosigners = new address[](0);
+
+        ITeeExtensionRegistry.TeeInstructionParams memory params = ITeeExtensionRegistry.TeeInstructionParams({
+            opType: OP_TYPE_ATTESTATION,
+            opCommand: OP_COMMAND_EVALUATE_FASSETS_AGENT_SOLVENCY,
+            message: _message,
+            cosigners: cosigners,
+            cosignersThreshold: 0,
+            claimBackAddress: msg.sender
+        });
+
+        TEE_EXTENSION_REGISTRY.sendInstructions{value: msg.value}(
+            teeIds,
+            params
+        );
+    }
+
+    /// @notice Sends an EVALUATE_CONSUMER_CREDIT instruction to the TEE.
+    /// @param _message JSON-encoded payload (subject, requestedCreditUsd,
+    /// publicWalletBalanceUsd, privateIncomeUsd, privateLiabilitiesUsd).
+    function sendEvaluateConsumerCredit(bytes calldata _message) external payable {
+        address[] memory teeIds = TEE_MACHINE_REGISTRY.getRandomTeeIds(_getExtensionId(), 1);
+        address[] memory cosigners = new address[](0);
+
+        ITeeExtensionRegistry.TeeInstructionParams memory params = ITeeExtensionRegistry.TeeInstructionParams({
+            opType: OP_TYPE_ATTESTATION,
+            opCommand: OP_COMMAND_EVALUATE_CONSUMER_CREDIT,
+            message: _message,
             cosigners: cosigners,
             cosignersThreshold: 0,
             claimBackAddress: msg.sender
