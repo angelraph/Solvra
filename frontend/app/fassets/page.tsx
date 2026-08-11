@@ -116,13 +116,13 @@ export default function FassetsPage() {
           <a href={explorerAddr(EXAMPLE_AGENT_VAULT)} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
             view on explorer
           </a>
-          ) — found via <code className="text-neutral-400">AssetManagerFXRP.getAllAgents()</code>. Paste any other real
+          ), found via <code className="text-neutral-400">AssetManagerFXRP.getAllAgents()</code>. Paste any other real
           agent vault address to query it instead.
         </p>
 
         {agentInfo.isLoading && <p className="mt-4 text-sm text-neutral-500">Reading live agent data from Coston2…</p>}
         {agentInfo.isError && (
-          <p className="mt-4 text-sm text-red-400">Could not read agent info — is this a valid agent vault address?</p>
+          <p className="mt-4 text-sm text-red-400">Could not read agent info. Is this a valid agent vault address?</p>
         )}
 
         {agentData && (
@@ -130,23 +130,23 @@ export default function FassetsPage() {
             <Stat label="Status" value={statusCode === 0 ? "NORMAL" : `code ${statusCode}`} live />
             <Stat
               label="On-chain collateral ratio"
-              value={collateralRatioBips !== undefined ? `${(collateralRatioBips / 100).toFixed(2)}%` : "—"}
+              value={collateralRatioBips !== undefined ? `${(collateralRatioBips / 100).toFixed(2)}%` : "Loading…"}
               live
             />
             <Stat
               label="Minted FXRP"
-              value={mintedFAssetAmount !== undefined ? `${mintedFAssetAmount.toFixed(2)} FXRP` : "—"}
+              value={mintedFAssetAmount !== undefined ? `${mintedFAssetAmount.toFixed(2)} FXRP` : "Loading…"}
               live
             />
-            <Stat label="XRPL underlying address" value={underlyingXrplAddress ?? "—"} live mono />
+            <Stat label="XRPL underlying address" value={underlyingXrplAddress ?? "Loading…"} live mono />
             <Stat
               label="Live XRP/USD (FTSOv2)"
-              value={xrpPrice.price !== undefined ? `$${xrpPrice.price.toFixed(4)}` : "—"}
+              value={xrpPrice.price !== undefined ? `$${xrpPrice.price.toFixed(4)}` : xrpPrice.isError ? "Price unavailable" : "Loading price…"}
               live
             />
             <Stat
               label="Minted FXRP value"
-              value={mintedFAssetValueUsd !== undefined ? `$${mintedFAssetValueUsd.toFixed(2)}` : "—"}
+              value={mintedFAssetValueUsd !== undefined ? `$${mintedFAssetValueUsd.toFixed(2)}` : "Loading…"}
               live
             />
           </div>
@@ -159,8 +159,8 @@ export default function FassetsPage() {
         </p>
         <p className="mt-1 text-xs text-neutral-500">
           This is meant to be the agent&apos;s real XRPL reserve balance, verified on-chain via FDC&apos;s Web2Json
-          attestation. That live request/poll flow (~90–180s) isn&apos;t wired into this page yet — entering it
-          manually here for now, and saying so plainly rather than hiding it.
+          attestation. That live request/poll flow (roughly 90 to 180 seconds) isn&apos;t wired into this page yet,
+          so it&apos;s entered by hand for now. Saying that plainly instead of hiding it.
         </p>
         <label className="mt-4 block text-xs font-medium uppercase tracking-wide text-neutral-500">
           XRPL reserve (XRP)
@@ -207,7 +207,7 @@ export default function FassetsPage() {
         <section className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
           <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Local preview of the policy result</p>
           <p className="mt-1 text-xs text-neutral-600">
-            Computed here in the browser for a live preview — the real verdict comes from Solvra&apos;s TEE, not this
+            Computed here in the browser as a live preview. The real verdict comes from Solvra&apos;s TEE, not this
             page, once the instruction below is processed.
           </p>
           <div className="mt-4 flex items-baseline gap-3">
@@ -246,7 +246,7 @@ export default function FassetsPage() {
             </p>
             {receipt.isSuccess && (
               <p className="mt-2 text-neutral-400">
-                Confirmed on-chain. The signed TEE result is picked up by Solvra&apos;s extension proxy — that
+                Confirmed on-chain. The signed TEE result is picked up by Solvra&apos;s extension proxy, and that
                 infrastructure is still being connected (see{" "}
                 <a
                   href="https://github.com/angelraph/Solvra/blob/main/docs/deployments.md"

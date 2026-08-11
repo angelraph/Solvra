@@ -1,5 +1,5 @@
-import { useReadContract } from "wagmi";
-import { CONTRACTS, XRP_USD_FEED_ID } from "./contracts";
+import { useReadContract, useBalance } from "wagmi";
+import { CONTRACTS, XRP_USD_FEED_ID, FLR_USD_FEED_ID } from "./contracts";
 
 /** Real on-chain read of a FAssets agent's public info via AssetManagerFXRP. */
 export function useAgentInfo(agentVault: `0x${string}` | undefined) {
@@ -12,13 +12,15 @@ export function useAgentInfo(agentVault: `0x${string}` | undefined) {
   });
 }
 
-/** Real on-chain read of the live XRP/USD price from FTSOv2. */
-export function useXrpUsdPrice() {
+/** Real on-chain read of a live price from FTSOv2, given a bytes21 feed id.
+ * Decimals genuinely vary per feed (XRP/USD uses 6, FLR/USD uses 8 — this
+ * reads whatever the feed actually reports rather than assuming one). */
+export function useFtsoPrice(feedId: `0x${string}`) {
   const result = useReadContract({
     address: CONTRACTS.ftsoV2.address,
     abi: CONTRACTS.ftsoV2.abi,
     functionName: "getFeedById",
-    args: [XRP_USD_FEED_ID],
+    args: [feedId],
   });
 
   const data = result.data as readonly [bigint, number, bigint] | undefined;
@@ -26,6 +28,19 @@ export function useXrpUsdPrice() {
   const timestamp = data ? Number(data[2]) : undefined;
 
   return { ...result, price, timestamp };
+}
+
+export function useXrpUsdPrice() {
+  return useFtsoPrice(XRP_USD_FEED_ID);
+}
+
+export function useFlrUsdPrice() {
+  return useFtsoPrice(FLR_USD_FEED_ID);
+}
+
+/** Real native C2FLR balance of a connected wallet. */
+export function useC2FlrBalance(address: `0x${string}` | undefined) {
+  return useBalance({ address });
 }
 
 /** Reads a PolicyRegistry-registered policy's metadata. */

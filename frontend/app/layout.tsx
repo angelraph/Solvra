@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Solvra — Prove solvency. Reveal nothing.",
+  title: "Solvra: Prove solvency. Reveal nothing.",
   description:
     "Confidential attestations on Flare: prove a financial policy is satisfied without revealing the data behind it.",
 };

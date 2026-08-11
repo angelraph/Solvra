@@ -50,6 +50,11 @@ export const CONTRACTS = {
  */
 export const XRP_USD_FEED_ID = "0x015852502f55534400000000000000000000000000" as const;
 
+/** bytes21 feed id for "FLR/USD" — sourced from Flare's own developer-hub
+ * GetFeedId.sol example and independently re-confirmed live via
+ * IFtsoFeedIdConverter.getFeedId(1, "FLR/USD") against Coston2. */
+export const FLR_USD_FEED_ID = "0x01464c522f55534400000000000000000000000000" as const;
+
 /** A real, live, publicly-available FAssets agent on Coston2 (one of 4 found
  * via assetManagerFXRP.getAllAgents), used as the default example on the
  * /fassets page. Its public collateral data is real; see that page for how

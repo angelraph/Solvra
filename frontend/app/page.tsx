@@ -29,10 +29,10 @@ export default function HomePage() {
       </h1>
       <p className="mt-6 max-w-2xl text-lg text-neutral-400">
         Solvra is a confidential attestation protocol on Flare. A FAssets agent
-        or a wallet can prove it meets a collateral or credit policy —{" "}
-        <span className="text-neutral-200">PASS/FAIL plus a tier</span> — without
-        ever publishing the underlying reserves, income, or liabilities that
-        made it pass.
+        or a wallet can prove it meets a collateral or credit policy, getting
+        back <span className="text-neutral-200">PASS/FAIL plus a tier</span>,
+        without ever publishing the reserves, income, or liabilities that made
+        it pass.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -55,10 +55,10 @@ export default function HomePage() {
           Why this needs Flare, specifically
         </h2>
         <p className="mt-3 max-w-2xl text-neutral-400">
-          A FAssets agent&apos;s on-chain collateral ratio is already public —
-          re-publishing it privately would add nothing. Solvra&apos;s policy
-          combines three tiers of input, and each one depends on a different
-          piece of Flare infrastructure:
+          A FAssets agent&apos;s on-chain collateral ratio is already public,
+          so re-publishing it privately would add nothing. Solvra&apos;s policy
+          combines three tiers of input instead, and each one depends on a
+          different piece of Flare infrastructure:
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           {[
@@ -72,7 +72,7 @@ export default function HomePage() {
             },
             {
               tier: "3 · Private, TEE-only",
-              detail: "Supplementary reserves and undisclosed liabilities — computed inside a Flare Compute Extension, never published, only their hash.",
+              detail: "Supplementary reserves and undisclosed liabilities, computed inside a Flare Compute Extension. Never published, only their hash.",
             },
           ].map((item) => (
             <div key={item.tier} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
@@ -85,7 +85,7 @@ export default function HomePage() {
 
       <section className="mt-16">
         <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-500">
-          Live on Coston2 — not a diagram, an address
+          Live on Coston2, not just a diagram
         </h2>
         <div className="mt-4 divide-y divide-neutral-800 overflow-hidden rounded-xl border border-neutral-800">
           {DEPLOYMENTS.map((d) => (
@@ -94,10 +94,10 @@ export default function HomePage() {
               href={explorerUrl(d.address)}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-between gap-4 bg-neutral-900/30 px-5 py-3 text-sm transition hover:bg-neutral-900"
+              className="flex flex-col gap-1 bg-neutral-900/30 px-5 py-3 text-sm transition hover:bg-neutral-900 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
             >
               <span className="text-neutral-300">{d.label}</span>
-              <span className="font-mono text-xs text-neutral-500">{d.address}</span>
+              <span className="break-all font-mono text-xs text-neutral-500">{d.address}</span>
             </a>
           ))}
         </div>
