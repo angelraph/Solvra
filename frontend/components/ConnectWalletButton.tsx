@@ -100,7 +100,7 @@ export function ConnectWalletButton() {
       const only = connectors[0];
       return (
         <div className="flex flex-col items-end gap-1">
-          {stuck && <span className="text-xs text-neutral-500">Connection timed out — try again</span>}
+          {stuck && <span className="text-xs text-neutral-500">Connection timed out. Try again</span>}
           <button
             onClick={() => pick(only)}
             disabled={isPending}
@@ -115,7 +115,7 @@ export function ConnectWalletButton() {
 
     return (
       <div className="relative">
-        {stuck && <div className="mb-1 text-right text-xs text-neutral-500">Connection timed out — pick a wallet:</div>}
+        {stuck && <div className="mb-1 text-right text-xs text-neutral-500">Connection timed out. Pick a wallet:</div>}
         <button
           onClick={() => setMenuOpen((v) => !v)}
           disabled={isPending}

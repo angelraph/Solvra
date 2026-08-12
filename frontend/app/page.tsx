@@ -22,25 +22,25 @@ const STEPS = [
     number: "1",
     title: "You have private numbers",
     detail:
-      "A FAssets agent's real treasury, or a wallet's real income and debts — information you have a good reason not to publish to the world.",
+      "A FAssets agent's real treasury, or a wallet's real income and debts. Information you have a good reason not to publish to the world.",
   },
   {
     number: "2",
     title: "Solvra checks them in a sealed environment",
     detail:
-      "Your numbers go into a Flare Compute Extension — a secure enclave that runs the check but can't be inspected while it's running, not even by Solvra.",
+      "Your numbers go into a Flare Compute Extension, a secure enclave that runs the check but can't be inspected while it's running, not even by Solvra.",
   },
   {
     number: "3",
     title: "You get back a verdict, not your data",
     detail:
-      "Pass or fail, plus a tier (A, B, or C). That's it. The actual numbers never leave the enclave — only their result, cryptographically signed.",
+      "Pass or fail, plus a tier (A, B, or C). That's it. The actual numbers never leave the enclave. Only their result leaves, cryptographically signed.",
   },
   {
     number: "4",
     title: "Anyone can check the verdict is real",
     detail:
-      "The signature is verifiable on-chain by anyone — a lender, a protocol, a curious stranger — without ever seeing what was behind it.",
+      "Anyone can verify the signature on-chain, a lender, a protocol, a curious stranger, without ever seeing what was behind it.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function HomePage() {
           </h1>
           <p className="mt-8 max-w-xl text-lg text-neutral-400">
             Think of it like a background check that only ever says &ldquo;approved&rdquo; or
-            &ldquo;not approved&rdquo; &mdash; never the private details it looked at to decide. Solvra lets a
+            &ldquo;not approved,&rdquo; never the private details it looked at to decide. Solvra lets a
             FAssets agent or a crypto wallet prove it meets a financial policy and get back
             PASS/FAIL plus a tier, without publishing the reserves, income, or liabilities that
             made it pass.
@@ -129,7 +129,7 @@ export default function HomePage() {
             How Solvra actually works
           </h2>
           <p className="mt-4 max-w-2xl text-neutral-600">
-            No wallet needed to understand this part &mdash; just four steps.
+            No wallet needed to understand this part, just four steps.
           </p>
 
           <ol className="mt-12 space-y-8">
@@ -208,7 +208,7 @@ export default function HomePage() {
             What do you want to do?
           </h2>
           <p className="mt-3 max-w-2xl text-neutral-400">
-            Pick the one that sounds like you &mdash; every page below is the live app, not a
+            Pick the one that sounds like you. Every page below is the live app, not a
             mockup.
           </p>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
