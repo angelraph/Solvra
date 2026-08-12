@@ -1,19 +1,26 @@
 import { createConfig, http } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { injected, walletConnect } from "wagmi/connectors";
 import { coston2 } from "./chain";
 
+// Reown (WalletConnect) Cloud project ID — real project, "Solvra", created by
+// the user at cloud.reown.com.
+const REOWN_PROJECT_ID = "4471f6d14e411b041863e99f85958a7b";
+
 /**
- * A single injected-wallet connector (MetaMask, Rabby, Brave Wallet, etc.) —
- * what anyone testing this on Coston2 actually has installed. Deliberately
- * not using RainbowKit (its bundled Coinbase Wallet connector breaks the
- * Next.js build, see git history) or wagmi's walletConnect() connector
- * (its default QR modal lists hundreds of unrelated wallets — Injective,
- * Solana wallets, etc. — which is noise for a single-chain EVM testnet demo,
- * not a real integration need here).
+ * Injected wallets (MetaMask, Rabby, Brave Wallet, etc. — via EIP-6963, see
+ * ConnectWalletButton) as the fast path, plus WalletConnect as a fallback for
+ * anyone without a browser extension (mobile, or a desktop wallet that only
+ * does WalletConnect). WalletConnect was dropped once before because its
+ * default QR modal lists every wallet on the protocol regardless of chain
+ * (Injective, Solana wallets, etc.) — noise, but not a reason to leave
+ * extension-less users with no way to connect at all. Deliberately still not
+ * using RainbowKit: its bundled Coinbase Wallet connector statically imports
+ * Solana x402 modules that don't resolve and break the Next.js build (see
+ * git history) — wagmi's own connectors avoid that entirely.
  */
 export const wagmiConfig = createConfig({
   chains: [coston2],
-  connectors: [injected()],
+  connectors: [injected(), walletConnect({ projectId: REOWN_PROJECT_ID, showQrModal: true })],
   transports: {
     // Explicit timeout: viem's http() transport otherwise has no bound of
     // its own on a single request, so a slow or unresponsive RPC node

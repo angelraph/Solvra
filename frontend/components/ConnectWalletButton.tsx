@@ -35,6 +35,12 @@ function connectorLabel(name: string): string {
 // that might still resolve later and stomp on it.
 const STUCK_TIMEOUT_MS = 4000;
 
+// WalletConnect's fresh pairing needs a human to scan a QR code and approve
+// on their phone — that can genuinely take minutes, nothing like an injected
+// extension's near-instant popup. Applying STUCK_TIMEOUT_MS to it would tear
+// the QR modal down mid-scan and read as "connect is broken."
+const WC_STUCK_TIMEOUT_MS = 5 * 60 * 1000;
+
 export function ConnectWalletButton() {
   const { address, status, chainId } = useAccount();
   const { connect, connectors, isPending, error } = useConnect();
@@ -42,6 +48,7 @@ export function ConnectWalletButton() {
   const { switchChain, isPending: isSwitching } = useSwitchChain();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
+  const [pendingConnectorId, setPendingConnectorId] = useState<string | null>(null);
 
   // Reset 'stuck' the moment status leaves connecting/reconnecting. Adjusting
   // state during render (React's documented pattern for "reset state when a
@@ -52,11 +59,20 @@ export function ConnectWalletButton() {
   const [lastStatus, setLastStatus] = useState(status);
   if (status !== lastStatus) {
     setLastStatus(status);
-    if (status !== "connecting" && status !== "reconnecting") setStuck(false);
+    if (status !== "connecting" && status !== "reconnecting") {
+      setStuck(false);
+      setPendingConnectorId(null);
+    }
   }
 
   useEffect(() => {
     if (status !== "connecting" && status !== "reconnecting") return;
+    // A fresh WalletConnect pairing (not a silent reconnect — that resumes an
+    // existing session and should be just as fast as an injected wallet)
+    // gets real human-scale time instead of the short injected-wallet budget.
+    const pendingConnector = connectors.find((c) => c.id === pendingConnectorId);
+    const timeoutMs =
+      status === "connecting" && pendingConnector?.type === "walletConnect" ? WC_STUCK_TIMEOUT_MS : STUCK_TIMEOUT_MS;
     const timer = setTimeout(() => {
       setStuck(true);
       // Actively tear down the stalled attempt rather than leaving it
@@ -64,9 +80,9 @@ export function ConnectWalletButton() {
       // just hides the problem until the zombie reconnect eventually
       // resolves (or never does) and clobbers whatever the user did next.
       disconnect();
-    }, STUCK_TIMEOUT_MS);
+    }, timeoutMs);
     return () => clearTimeout(timer);
-  }, [status, disconnect]);
+  }, [status, disconnect, connectors, pendingConnectorId]);
 
   // Belt-and-suspenders: even with the status-based guard above, a
   // connector can already be connected from another tab/session. In that
@@ -93,6 +109,7 @@ export function ConnectWalletButton() {
 
     const pick = (connector: Connector) => {
       setMenuOpen(false);
+      setPendingConnectorId(connector.id);
       connect({ connector });
     };
 

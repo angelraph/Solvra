@@ -248,8 +248,11 @@ export default function FassetsPage() {
             </p>
             {receipt.isSuccess && (
               <p className="mt-2 text-neutral-400">
-                Confirmed on-chain. The signed TEE result is picked up by Solvra&apos;s extension proxy, and that
-                infrastructure is still being connected (see{" "}
+                Confirmed on-chain. Solvra&apos;s TEE extension is live on real Confidential Space hardware, but the
+                signed verdict for this instruction isn&apos;t rendered here yet: the TEE&apos;s signer still needs
+                to finish registering on-chain before{" "}
+                <code className="text-neutral-300">AttestationRegistry</code> will trust it, and that&apos;s
+                waiting on Flare&apos;s own data providers to answer the machine&apos;s availability check. See{" "}
                 <a
                   href="https://github.com/angelraph/Solvra/blob/main/docs/deployments.md"
                   target="_blank"
@@ -258,7 +261,7 @@ export default function FassetsPage() {
                 >
                   docs/deployments.md
                 </a>{" "}
-                for current status), so no signed verdict is shown here yet. The transaction itself is real.
+                for exactly what&apos;s confirmed working right now.
               </p>
             )}
           </div>
