@@ -24,7 +24,14 @@ export default function HomePage() {
       {/* ── Hero — dark, the sphere represents the product itself: many
           private signals, one verified answer. ── */}
       <section className="relative overflow-hidden border-b border-neutral-800 bg-shark">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 md:block">
+        {/* One SignalSphere instance, repositioned by breakpoint rather than
+            duplicated — mounting it twice (an in-flow copy for mobile plus
+            the absolute desktop one) would open two WebGL contexts for the
+            same visual, wasteful on exactly the devices least able to
+            afford it. Below md it sits in normal flow, full width, above
+            the headline; at md+ it becomes the absolute right-half panel
+            behind the text. */}
+        <div className="relative mb-2 h-64 w-full sm:h-80 md:absolute md:inset-y-0 md:right-0 md:mb-0 md:h-auto md:w-1/2">
           <SignalSphere />
         </div>
         <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">

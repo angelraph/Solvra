@@ -15,7 +15,14 @@ export const wagmiConfig = createConfig({
   chains: [coston2],
   connectors: [injected()],
   transports: {
-    [coston2.id]: http(),
+    // Explicit timeout: viem's http() transport otherwise has no bound of
+    // its own on a single request, so a slow or unresponsive RPC node
+    // leaves any call — including the ones wagmi's own silent reconnect
+    // makes on mount — hanging indefinitely instead of failing and letting
+    // wagmi's state machine settle. 8s per attempt, 2 retries, so a stalled
+    // request surfaces as a real error within ~24s worst case rather than
+    // never.
+    [coston2.id]: http(undefined, { timeout: 8_000, retryCount: 2 }),
   },
   ssr: true,
 });

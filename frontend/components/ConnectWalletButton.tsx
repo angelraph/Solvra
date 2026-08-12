@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
+import type { Connector } from "wagmi";
 import { coston2 } from "@/lib/chain";
 
 function shortenAddress(address: string): string {
@@ -18,27 +19,54 @@ function connectorLabel(name: string): string {
   return name.toLowerCase() === "injected" ? "Wallet" : name;
 }
 
-/**
- * Lists every wallet extension actually installed in the browser — MetaMask,
- * OKX Wallet, Rabby, etc. — as separate choices, via wagmi's built-in
- * EIP-6963 multi-provider discovery.
- *
- * Deliberately branches on useAccount()'s full `status` ('connecting' |
- * 'reconnecting' | 'connected' | 'disconnected'), not just the derived
- * `isConnected` boolean. wagmi persists sessions to localStorage and
- * silently reconnects them on mount; during that async window `isConnected`
- * reads false even though the underlying connector is already marked
- * connected internally, so a click on a naive "not connected" button can
- * call connect() on a connector that's already connected and throw
- * ConnectorAlreadyConnectedError. Treating 'reconnecting' (and
- * 'connecting') as its own disabled state removes that race entirely.
- */
+// How long a silent reconnect (or a user-initiated connect) is allowed to sit
+// before we treat it as stuck. wagmi's auto-reconnect on mount has no
+// built-in timeout of its own — if the previously-connected extension is
+// locked, removed, or just slow to respond, the account status sits at
+// 'reconnecting' forever with nothing else rendered, so the button reads
+// "Connecting…" indefinitely with no way out. Paired with the explicit RPC
+// transport timeout in lib/wagmiConfig.ts (8s, 2 retries — the actual fix
+// for *why* a request hangs) this is the backstop for the cases that isn't
+// enough for: a locked/unresponsive extension itself never replies to
+// wagmi's silent eth_accounts call in the first place, which no RPC timeout
+// touches. When this fires we don't just show a picker over the stuck
+// attempt — see the disconnect() call below — we actively clear it, so the
+// next connect() is a genuinely clean attempt instead of racing a zombie one
+// that might still resolve later and stomp on it.
+const STUCK_TIMEOUT_MS = 4000;
+
 export function ConnectWalletButton() {
   const { address, status, chainId } = useAccount();
   const { connect, connectors, isPending, error } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: isSwitching } = useSwitchChain();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [stuck, setStuck] = useState(false);
+
+  // Reset 'stuck' the moment status leaves connecting/reconnecting. Adjusting
+  // state during render (React's documented pattern for "reset state when a
+  // prop changes") rather than in the effect below avoids an extra
+  // cascading-render pass; the effect is left to do only what effects are
+  // for — arming a timer and calling setState from its callback once it
+  // actually fires, not synchronously in the effect body.
+  const [lastStatus, setLastStatus] = useState(status);
+  if (status !== lastStatus) {
+    setLastStatus(status);
+    if (status !== "connecting" && status !== "reconnecting") setStuck(false);
+  }
+
+  useEffect(() => {
+    if (status !== "connecting" && status !== "reconnecting") return;
+    const timer = setTimeout(() => {
+      setStuck(true);
+      // Actively tear down the stalled attempt rather than leaving it
+      // running in the background — a plain UI escape hatch without this
+      // just hides the problem until the zombie reconnect eventually
+      // resolves (or never does) and clobbers whatever the user did next.
+      disconnect();
+    }, STUCK_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [status, disconnect]);
 
   // Belt-and-suspenders: even with the status-based guard above, a
   // connector can already be connected from another tab/session. In that
@@ -47,7 +75,7 @@ export function ConnectWalletButton() {
   // resulting ConnectorAlreadyConnectedError as a scary red message.
   const displayError = error?.name === "ConnectorAlreadyConnectedError" ? null : error;
 
-  if (status === "connecting" || status === "reconnecting") {
+  if ((status === "connecting" || status === "reconnecting") && !stuck) {
     return (
       <button
         disabled
@@ -58,17 +86,23 @@ export function ConnectWalletButton() {
     );
   }
 
-  if (status === "disconnected") {
+  if (status === "disconnected" || stuck) {
     if (connectors.length === 0) {
       return <span className="text-xs text-neutral-500">No wallet extension found</span>;
     }
+
+    const pick = (connector: Connector) => {
+      setMenuOpen(false);
+      connect({ connector });
+    };
 
     if (connectors.length === 1) {
       const only = connectors[0];
       return (
         <div className="flex flex-col items-end gap-1">
+          {stuck && <span className="text-xs text-neutral-500">Connection timed out — try again</span>}
           <button
-            onClick={() => connect({ connector: only })}
+            onClick={() => pick(only)}
             disabled={isPending}
             className="rounded-lg bg-amaranth px-4 py-2 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -81,6 +115,7 @@ export function ConnectWalletButton() {
 
     return (
       <div className="relative">
+        {stuck && <div className="mb-1 text-right text-xs text-neutral-500">Connection timed out — pick a wallet:</div>}
         <button
           onClick={() => setMenuOpen((v) => !v)}
           disabled={isPending}
@@ -88,15 +123,12 @@ export function ConnectWalletButton() {
         >
           {isPending ? "Connecting…" : "Connect Wallet"}
         </button>
-        {menuOpen && (
+        {(menuOpen || stuck) && (
           <div className="absolute right-0 z-10 mt-2 w-48 overflow-hidden rounded-lg border border-neutral-700 bg-neutral-900 shadow-xl">
             {connectors.map((connector) => (
               <button
                 key={connector.uid}
-                onClick={() => {
-                  setMenuOpen(false);
-                  connect({ connector });
-                }}
+                onClick={() => pick(connector)}
                 className="flex w-full items-center px-4 py-2.5 text-left text-sm text-neutral-100 transition hover:bg-neutral-800"
               >
                 {connectorLabel(connector.name)}
