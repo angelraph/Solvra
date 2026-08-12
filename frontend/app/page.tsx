@@ -37,8 +37,8 @@ export default function HomePage() {
           </h1>
           <p className="mt-8 max-w-xl text-lg text-neutral-400">
             Solvra is a confidential attestation protocol on Flare. A FAssets agent or a wallet
-            proves it meets a collateral or credit policy — PASS/FAIL plus a tier — without ever
-            publishing the reserves, income, or liabilities that made it pass.
+            proves it meets a collateral or credit policy, getting back PASS/FAIL plus a tier,
+            without ever publishing the reserves, income, or liabilities that made it pass.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
