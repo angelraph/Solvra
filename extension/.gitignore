@@ -61,3 +61,7 @@ DEPLOYMENT.md
 
 config/**/*.log
 config/register-tee.state
+
+# Saved Docker images (built locally for GCP Confidential Space upload, not
+# meant to live in git — see docs/deployments.md for how to rebuild).
+*.tar

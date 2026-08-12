@@ -1,0 +1,59 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: flare-ftso-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db_init/:/docker-entrypoint-initdb.d/
+
+  indexer:
+    image: us-central1-docker.pkg.dev/solvra-505212/solvra/flare-cchain-indexer:latest
+    restart: always
+    container_name: flare-indexer
+    command: ["./flare-cchain-indexer", "--config", "/app/config.toml"]
+    volumes:
+      - ./indexer-config.toml:/app/config.toml:ro
+    depends_on:
+      - mysql
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: redis-server --save "" --appendonly no
+    container_name: solvra-redis
+
+  ext-proxy:
+    image: us-central1-docker.pkg.dev/solvra-505212/solvra/tee-proxy:latest
+    restart: always
+    container_name: solvra-ext-proxy
+    volumes:
+      - ./extension_proxy.coston2.docker.toml:/app/config/config.toml:ro
+    environment:
+      - PROXY_PRIVATE_KEY=${PROXY_PRIVATE_KEY}
+    ports:
+      - "0.0.0.0:6663:6663"
+      - "0.0.0.0:6664:6664"
+    depends_on:
+      - redis
+      - mysql
+      - indexer
+
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    container_name: solvra-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - ext-proxy
+
+volumes:
+  mysql_data:
+  caddy_data:
