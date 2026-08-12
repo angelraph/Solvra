@@ -2,7 +2,7 @@
 
 ## Frontend
 
-Live: **https://frontend-six-rho-47.vercel.app**
+Live: **https://solvra-angelraphs-projects.vercel.app**
 
 Next.js app, all 6 pages (landing, `/fassets`, `/credit`, `/relying-party`,
 `/trust`, `/developers`) reading real data from the Coston2 contracts below.

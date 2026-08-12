@@ -11,7 +11,7 @@ made it pass.
 Built for Flare's **Summer Signal** hackathon (DoraHacks), targeting both the
 Interoperable Asset Products and Confidential Compute Apps bounties.
 
-- **Live app:** https://frontend-six-rho-47.vercel.app
+- **Live app:** https://solvra-angelraphs-projects.vercel.app
 - **Deployed contracts & tx hashes:** [`docs/deployments.md`](docs/deployments.md)
 
 ## The problem
@@ -102,7 +102,7 @@ single-purpose lending app.
 
 Solvra's build standard: **nothing shipped is mocked.** Where a real gap
 exists, it's stated plainly in the UI and docs rather than faked. Full,
-current breakdown lives on the live app's [Trust Center](https://frontend-six-rho-47.vercel.app/trust) —
+current breakdown lives on the live app's [Trust Center](https://solvra-angelraphs-projects.vercel.app/trust) —
 short version:
 
 **Real and live:**

@@ -1,7 +1,7 @@
 # Demo script
 
 Target: under 3 minutes. Every screen shown is the live app at
-https://frontend-six-rho-47.vercel.app — nothing here is a mockup.
+https://solvra-angelraphs-projects.vercel.app — nothing here is a mockup.
 
 ## 1. The problem, fast (15s)
 
