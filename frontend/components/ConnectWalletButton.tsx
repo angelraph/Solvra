@@ -10,23 +10,45 @@ function shortenAddress(address: string): string {
 
 /**
  * Lists every wallet extension actually installed in the browser — MetaMask,
- * OKX Wallet, Rabby, etc. — as separate choices. wagmi's injected() connector
- * combined with its built-in EIP-6963 multi-provider discovery (on by
- * default) surfaces each installed extension as its own connector in
- * `connectors`; the earlier version of this component collapsed that down to
- * connectors[0], which meant it always jumped straight into whichever
- * extension happened to register itself first instead of letting you pick.
- * No WalletConnect connector here — that's the piece that pulled in a
- * separate 300-wallet remote-wallet modal unrelated to what's installed.
+ * OKX Wallet, Rabby, etc. — as separate choices, via wagmi's built-in
+ * EIP-6963 multi-provider discovery.
+ *
+ * Deliberately branches on useAccount()'s full `status` ('connecting' |
+ * 'reconnecting' | 'connected' | 'disconnected'), not just the derived
+ * `isConnected` boolean. wagmi persists sessions to localStorage and
+ * silently reconnects them on mount; during that async window `isConnected`
+ * reads false even though the underlying connector is already marked
+ * connected internally, so a click on a naive "not connected" button can
+ * call connect() on a connector that's already connected and throw
+ * ConnectorAlreadyConnectedError. Treating 'reconnecting' (and
+ * 'connecting') as its own disabled state removes that race entirely.
  */
 export function ConnectWalletButton() {
-  const { address, isConnected, chainId } = useAccount();
+  const { address, status, chainId } = useAccount();
   const { connect, connectors, isPending, error } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain, isPending: isSwitching } = useSwitchChain();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  if (!isConnected) {
+  // Belt-and-suspenders: even with the status-based guard above, a
+  // connector can already be connected from another tab/session. In that
+  // case wagmi's own account state resolves to "connected" on its own
+  // shortly after — nothing to show the user, just don't surface the
+  // resulting ConnectorAlreadyConnectedError as a scary red message.
+  const displayError = error?.name === "ConnectorAlreadyConnectedError" ? null : error;
+
+  if (status === "connecting" || status === "reconnecting") {
+    return (
+      <button
+        disabled
+        className="rounded-lg bg-amaranth px-4 py-2 text-sm font-medium text-neutral-950 opacity-60"
+      >
+        Connecting…
+      </button>
+    );
+  }
+
+  if (status === "disconnected") {
     if (connectors.length === 0) {
       return <span className="text-xs text-neutral-500">No wallet extension found</span>;
     }
@@ -42,7 +64,7 @@ export function ConnectWalletButton() {
           >
             {isPending ? "Connecting…" : `Connect ${only.name}`}
           </button>
-          {error && <span className="max-w-64 text-right text-xs text-red-400">{error.message}</span>}
+          {displayError && <span className="max-w-64 text-right text-xs text-red-400">{displayError.message}</span>}
         </div>
       );
     }
@@ -72,13 +94,14 @@ export function ConnectWalletButton() {
             ))}
           </div>
         )}
-        {error && (
-          <span className="absolute right-0 mt-1 max-w-64 text-right text-xs text-red-400">{error.message}</span>
+        {displayError && (
+          <span className="absolute right-0 mt-1 max-w-64 text-right text-xs text-red-400">{displayError.message}</span>
         )}
       </div>
     );
   }
 
+  // status === "connected"
   if (chainId !== coston2.id) {
     return (
       <button
