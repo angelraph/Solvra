@@ -6,7 +6,9 @@ Live: **https://frontend-six-rho-47.vercel.app**
 
 Next.js app, all 6 pages (landing, `/fassets`, `/credit`, `/relying-party`,
 `/trust`, `/developers`) reading real data from the Coston2 contracts below.
-Wallet connection via wagmi (injected wallets + WalletConnect).
+Wallet connection via wagmi's EIP-6963 multi-provider discovery (every
+injected wallet extension shown as its own choice — MetaMask, Rabby, OKX
+Wallet, etc.) — no WalletConnect, no RainbowKit.
 
 ## Coston2 (Flare testnet, chain ID 114)
 
@@ -36,18 +38,68 @@ Both policies are registered and active on the live `PolicyRegistry`:
 | `fassets-agent-solvency-v1` | `FAssetsAgentSolvency` (0) | [`0xe8892d0c0b3b63b5ef35cc2e499d360935c08b1fc602a6cd75e5c7fbb053064a`](https://coston2-explorer.flare.network/tx/0xe8892d0c0b3b63b5ef35cc2e499d360935c08b1fc602a6cd75e5c7fbb053064a) |
 | `consumer-credit-line-v1` | `ConsumerCreditLine` (1) | [`0x79026c730054413495048a31a9aef2e7c23ae274c4e763eaa436be6b5be15e56`](https://coston2-explorer.flare.network/tx/0x79026c730054413495048a31a9aef2e7c23ae274c4e763eaa436be6b5be15e56) |
 
-`AttestationRegistry.trustedSigners` has no entries yet — that gets populated
-once a real TEE signer address exists (after the extension proxy is running
-and a signed result has been independently verified), not before.
+`AttestationRegistry.trustedSigners` gets populated once `post-build.sh`'s
+`register-tee` step completes (in progress — see below) and a real TEE
+signer address exists, not before.
 
-## What's still local-only (not yet proven end-to-end on Coston2)
+## The TEE workload — real GCP Confidential Space, not simulated
 
-- Running instructions through the TEE and getting a signed result back
-  (needs the extension proxy running publicly, which needs indexer DB
-  credentials from Flare support — requested, not yet received).
+`solvra-tee` (`us-central1-b`) is a genuine Confidential Space VM running the
+extension image with `MODE=0`. Its own attestation token, read straight off
+the VM's serial console, confirms real hardware:
+
+```
+hwmodel:GCP_AMD_SEV  secboot:true  swname:CONFIDENTIAL_SPACE
+```
+
+This is not `SIMULATED_TEE=true` — the platform trap the scaffold warns about
+(`codeHash` `0x194844cf…` meaning simulated) does not apply here.
+
+**A real deployment bug found and fixed along the way**: the first image
+build (`solvra:v0.1.0`) never actually wired up `CHAIN_ID` — it wasn't baked
+into the image and wasn't in the Confidential Space launch-policy override
+list, so the deployed node signed every response with no chain identity
+bound to it. `tee-proxy` correctly rejected those signatures
+(`verifying response signature: invalid signature`). Fixed in `v0.2.0` by
+baking `CHAIN_ID=114` into `typescript/Dockerfile`'s image, deliberately kept
+*out* of the override list — overriding the chain a signature is bound to at
+launch time, with no re-attestation of the change, is exactly what that
+allowlist exists to prevent.
+
+## The indexer/proxy — self-hosted, not waiting on Flare support
+
+`tee-proxy` reads `FlareSystemsManager`/`Relay`/`VoterRegistry` state
+directly from an indexer database — Flare's own shared Coston2 indexer, or a
+self-hosted equivalent. We asked Flare support for read access to the shared
+one; it went unanswered long enough that we self-hosted instead, using
+Flare's own `flare-system-c-chain-indexer` against a public Coston2 RPC. Both
+run on `solvra-infra` (`us-central1-a`, internal IP `10.128.0.2`), fronted by
+Caddy for automatic HTTPS with no owned domain
+(`https://35-239-129-118.sslip.io`, via sslip.io's IP-in-hostname trick):
+
+- `mysql` — the indexer's own database, credentials we control
+- `indexer` — `flare-cchain-indexer`, `mode = "full"`, `start_index` set
+  comfortably before the oldest reward epoch `tee-proxy` needs (its own
+  `fsp`-mode cold-start bootstrap left an unindexed gap between its
+  event-only backfill and where continuous indexing picked up — `full` mode
+  with an explicit start avoids that gap entirely, at the cost of a one-time
+  slower backfill)
+- `redis` — the proxy's queue
+- `ext-proxy` — `tee-proxy`, our own instance, not Flare's shared one
+- `caddy` — TLS termination for the public endpoints
+
+## What's left before an end-to-end round trip is proven
+
+- `post-build.sh` (`allow-tee-version`, `set-governance`, `register-tee`) —
+  waiting on the indexer's one-time full backfill to finish so `tee-proxy`
+  stays synced (its own 60-second staleness tolerance is what forced `full`
+  mode over `fsp` mode's faster-but-gappy cold start).
 - `submitAttestation` against a real TEE-signed payload (the raw-hash
   signature-recovery assumption in `AttestationRegistry.sol` is verified only
   against a locally-crafted signature so far, via Foundry's `vm.sign` — see
   that contract's docstring).
-- Real hardware attestation (Google Cloud Confidential Space, `MODE=0`) —
-  everything above runs with `SIMULATED_TEE=true` for now.
+- `scripts/test.sh` — the actual end-to-end round trip through the deployed
+  extension.
+
+This file gets a real proxy URL, `codeHash`, and TEE registration tx hash
+filled in the moment those steps complete — not before.
