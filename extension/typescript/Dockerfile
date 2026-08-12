@@ -79,13 +79,32 @@ RUN if [ "${SOURCE_DATE_EPOCH:-0}" -gt 0 ] 2>/dev/null; then find /app -exec tou
 # MODE=1 is SIMULATED attestation (local dev); MODE=0 is production attestation.
 # For a real Confidential Space deploy this MUST be 0 — FTDC rejects simulated
 # attestation. See docs/deployment-steps.md §5.
-ENV MODE=1 CONFIG_PORT=5501 SIGN_PORT=7701 EXTENSION_PORT=7702
+#
+# CHAIN_ID, GOVERNANCE_SIGNERS and GOVERNANCE_THRESHOLD are baked in (not
+# just default-able) because tee-node actually requires all three — see
+# tee-node's own .env.template. None of the three are in the launch_policy
+# override list below, so a real Confidential Space deploy that doesn't bake
+# them runs a node with no chain id and no governance signer configured at
+# all. The CHAIN_ID gap surfaced as tee-proxy's
+# "verifying response signature: invalid signature" panic (every signature
+# verifiable against nothing); the governance gap surfaces on-chain as
+# register-tee's "InvalidGovernanceHash" (the hash set on-chain via
+# set-governance never matches a node that was never told who its signers
+# are). Both are real, previously undiagnosed deployment bugs, not config
+# typos. 114 is Coston2, and the signer/threshold below match
+# INITIAL_OWNER/GOVERNANCE_THRESHOLD in extension/.env — a deploy targeting a
+# different chain or governance set needs its own image build.
+ENV MODE=1 CONFIG_PORT=5501 SIGN_PORT=7701 EXTENSION_PORT=7702 CHAIN_ID=114 \
+    GOVERNANCE_SIGNERS=0xB31A383FF83C274B11F7bF72e5007e9C44ED5adB GOVERNANCE_THRESHOLD=1
 
 # Match tee-node: the TEE workload itself is the isolation boundary.
 USER 0:0
 
 # Must match go/Dockerfile's list exactly — a mismatch means Confidential Space
-# silently rejects operator env overrides at attestation time.
+# silently rejects operator env overrides at attestation time. CHAIN_ID is
+# deliberately NOT here: overriding the chain a signature is bound to at
+# launch time, with no re-attestation of the change, is exactly the kind of
+# override this allowlist exists to prevent.
 LABEL "tee.launch_policy.allow_env_override"="LOG_LEVEL,PROXY_URL,INITIAL_OWNER,EXTENSION_ID,CHAIN_URL,MODE,CONFIG_PORT,SIGN_PORT,EXTENSION_PORT"
 
 EXPOSE 5501 7701 7702
