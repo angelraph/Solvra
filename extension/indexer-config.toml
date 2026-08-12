@@ -1,12 +1,110 @@
 [indexer]
-mode = "fsp"
+mode = "full"
+start_index = 33900000
+history_drop = 604800
 rpc_concurrency = 20
-batch_size = 1000
-log_range = 30
+batch_size = 30
+log_range = 500
 new_block_check_millis = 1000
 confirmations = 1
 no_new_blocks_delay_warning = 60
-history_epochs = 0
+
+# The exact filter set FSP mode auto-applies (captured from its own startup
+# log) — reproduced explicitly here because full mode does not auto-apply
+# them. Needed so tee-proxy can load signing-policy history from further back
+# than FSP mode's cold-start event-only backfill window reaches (see
+# docs/deployments.md for why we're on full mode, not fsp, here).
+[[indexer.collect_transactions]]
+contract_name = "Submission"
+func_sig = "6c532fae"
+status = false
+collect_events = false
+
+[[indexer.collect_transactions]]
+contract_name = "Submission"
+func_sig = "9d00c9fd"
+status = false
+collect_events = false
+
+[[indexer.collect_transactions]]
+contract_name = "Submission"
+func_sig = "57eed580"
+status = false
+collect_events = false
+
+[[indexer.collect_transactions]]
+contract_name = "Relay"
+func_sig = "b59589d1"
+status = true
+collect_events = true
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsManager"
+topic = "0xf21722dbe044a7cea0f6d81c871cae750971e36c9dd10999e46f2b46f26ac7ff"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsManager"
+topic = "0xf9991783e5e480e42d9a54d3f35f4321857f8f0ebeb3742d326dce28b1126708"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsManager"
+topic = "0x4abb62ab1e4c42a11b90e4e45b92af1274f74cc634b759518e8c99e000d8be6d"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsManager"
+topic = "0x235cef7d085c1e59545613282d239e56eb0cd056135aa46b8c658cf54a078561"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsManager"
+topic = "0x5506337d1266599f8b64675a1c8321701657ca2f2f70be0e0c58302b6c22e797"
+
+[[indexer.collect_logs]]
+contract_name = "VoterRegistry"
+topic = "0x824bc2cc10bfe21ead60b8c8a90716eb325b9335aa73eaede799abf38fce062c"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsCalculator"
+topic = "0x0ab8c10ef8cc6c5a591797917aba3b2688483b9ff7ab824f36b872a45b752e1f"
+
+[[indexer.collect_logs]]
+contract_name = "Relay"
+topic = "0x91d0280e969157fc6c5b8f952f237b03d934b18534dafcac839075bbc33522f8"
+
+[[indexer.collect_logs]]
+contract_name = "FtsoRewardOffersManager"
+topic = "0x01070f0e535c0d3077d9ca64b3122869a1897ff5c7711ba33b4db1fb9fd70cfc"
+
+[[indexer.collect_logs]]
+contract_name = "FtsoRewardOffersManager"
+topic = "0x0b348981891869f97551a071f05fba72c5efadafb062152f1ef417a25264d69a"
+
+[[indexer.collect_logs]]
+contract_name = "FastUpdateIncentiveManager"
+topic = "0x58575ff9908663af0451165c3cefcb802da242d63261f6d9df3be0e05366e4da"
+
+[[indexer.collect_logs]]
+contract_name = "FdcHub"
+topic = "0xedcf03eed469135e307ec8dc425dc2c49560d3014b724a532f6f468fcc975df8"
+
+[[indexer.collect_logs]]
+contract_name = "VoterRegistry"
+topic = "0xbfb6cd90b6e2668916d9e034926c84f40bcf94094b0d625ec8eecfdeb2150ae1"
+
+[[indexer.collect_logs]]
+contract_name = "FlareSystemsCalculator"
+topic = "0xc49a5cabcc0776ace8cfd024e155bc303ee5e492b29d59f1ff7dbafa0b34a04b"
+
+[[indexer.collect_logs]]
+contract_name = "FastUpdater"
+topic = "undefined"
+
+[[indexer.collect_logs]]
+contract_name = "FastUpdateIncentiveManager"
+topic = "undefined"
+
+[[indexer.collect_logs]]
+contract_name = "FdcHub"
+topic = "undefined"
 
 [logger]
 level = "INFO"
@@ -14,7 +112,7 @@ file = "./logs/flare-cchain-indexer.log"
 console = true
 
 [chain]
-node_url = "https://coston2-api.flare.network/ext/C/rpc"
+node_url = "http://coston2.test.aflabs.net:9650/ext/bc/C/rpc"
 chain_type = 1
 
 [db]
@@ -28,4 +126,4 @@ drop_table_at_start = false
 
 [timeout]
 backoff_max_elapsed_time_seconds = 300
-rpc_timeout_millis = 8000
+rpc_timeout_millis = 25000
