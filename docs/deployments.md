@@ -90,10 +90,32 @@ Caddy for automatic HTTPS with no owned domain
 
 ## What's left before an end-to-end round trip is proven
 
-- `post-build.sh` (`allow-tee-version`, `set-governance`, `register-tee`) —
-  waiting on the indexer's one-time full backfill to finish so `tee-proxy`
-  stays synced (its own 60-second staleness tolerance is what forced `full`
-  mode over `fsp` mode's faster-but-gappy cold start).
+`allow-tee-version` and `set-governance` are both confirmed complete and
+idempotent (re-run clean, no-ops on a second pass). The indexer's full-mode
+backfill finished; `tee-proxy` stays synced, and the policy-consistency
+preflight before every availability check reads from it and has passed
+cleanly on every attempt.
+
+**Currently blocked**: `register-tee`'s final step —
+`RequestAvailabilityCheckAttestation` succeeds on-chain every time (most
+recent: instruction `0xe58faba2214f7fee97a32428a3c758d65e85a7fccbc551829ad3082866af2eb7`),
+but the result never lands on either of Coston2's FTDC proxies
+(`tee-proxy-coston2-1.flare.rocks`, `-2.flare.rocks`) — both return 404
+`response not in storage`, including on a fresh attempt confirmed clean for
+a full 20 minutes (well past this system's normal timing per Flare's own
+FCC troubleshooting notes). Ruled out directly, not assumed:
+
+- Staleness — re-ran the whole flow fresh, same result.
+- Wrong proxy — identical 404 on primary and fallback.
+- Our own indexer/DB — the one step that reads it passes every time.
+- Unreachable machine — registered URL (`https://35-239-129-118.sslip.io`)
+  confirmed live, valid cert, both manually and via the tool's own preflight.
+
+Escalated to Flare's FCC support channel with the specific instruction ID,
+teeId, and dispatch details; waiting on a trace from their side. Machine
+status is not yet PRODUCTION as a direct result — expected at this stage,
+not a separate problem.
+
 - `submitAttestation` against a real TEE-signed payload (the raw-hash
   signature-recovery assumption in `AttestationRegistry.sol` is verified only
   against a locally-crafted signature so far, via Foundry's `vm.sign` — see
