@@ -103,16 +103,26 @@ export default function TrustPage() {
           detail="FAssets agent collateral, FXRP minted amounts, XRP/USD and FLR/USD prices are read directly from Coston2 on every page load. Not cached, not hardcoded."
         />
         <StatusRow
+          ok
+          title="Real hardware attestation: live on Google Cloud Confidential Space"
+          detail="MODE=0, not simulated. The running workload's own attestation is a Google-signed token confirming GCP_AMD_SEV hardware and a measured code hash, checkable directly against the proxy's /info endpoint."
+        />
+        <StatusRow
+          ok
+          title="TEE machine registered on-chain"
+          detail="Pre-registration and attestation both confirmed via real transactions on Flare's TeeMachineRegistry, not a local simulation."
+        />
+        <StatusRow
+          title="Final production promotion: pending Flare's own attestation round"
+          detail="The last step submits an on-chain availability check that real Flare data providers must independently observe and answer, on Flare's own reward-epoch cadence. That's Flare's infrastructure timing, not something on our end to speed up."
+        />
+        <StatusRow
           title="FDC-verified XRPL reserve: manual input for now"
           detail="The live Web2Json request/poll flow (roughly 90 to 180 seconds) isn't wired into the frontend yet. The /fassets page says so explicitly rather than faking it."
         />
         <StatusRow
-          title="TEE processing a live request: not yet observed end-to-end"
-          detail="Sending an instruction on-chain works today. Getting a signed result back needs Solvra's extension proxy running publicly, which needs indexer DB credentials from Flare support. Requested, still pending."
-        />
-        <StatusRow
-          title="Real hardware attestation (Google Cloud Confidential Space): not yet deployed"
-          detail="Everything today runs with SIMULATED_TEE=true. This is the single biggest remaining gap between 'built' and 'production-honest'."
+          title="A full signed verdict through the pipeline: not yet observed end-to-end"
+          detail="Sending an instruction on-chain works today. The proxy relaying it to the TEE and back is self-hosted (Flare's own indexer access request went unanswered, so we built our own against a public Coston2 RPC) and confirmed correctly synced with Flare's live network state. The last piece is the production promotion above."
         />
       </section>
 
