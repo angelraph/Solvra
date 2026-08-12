@@ -59,51 +59,51 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-2">
-          <div ref={menuRef} className="relative">
-            <button
-              type="button"
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-haspopup="menu"
-              aria-expanded={menuOpen}
-              aria-label="Open navigation menu"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-400 transition hover:bg-neutral-900 hover:text-neutral-100"
+        <div ref={menuRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            aria-label="Open menu"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-400 transition hover:bg-neutral-900 hover:text-neutral-100"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="17" y2="6" />
+              <line x1="3" y1="10" x2="17" y2="10" />
+              <line x1="3" y1="14" x2="17" y2="14" />
+            </svg>
+          </button>
+
+          {menuOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 z-20 mt-2 w-64 overflow-hidden rounded-lg border border-neutral-700 bg-neutral-900 py-1 shadow-xl"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <circle cx="4" cy="10" r="1.6" />
-                <circle cx="10" cy="10" r="1.6" />
-                <circle cx="16" cy="10" r="1.6" />
-              </svg>
-            </button>
-
-            {menuOpen && (
-              <div
-                role="menu"
-                className="absolute right-0 z-20 mt-2 w-56 overflow-hidden rounded-lg border border-neutral-700 bg-neutral-900 py-1 shadow-xl"
-              >
-                {NAV.map((item) => {
-                  const active = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      role="menuitem"
-                      onClick={() => setMenuOpen(false)}
-                      className={`flex items-center px-4 py-2.5 text-sm transition ${
-                        active
-                          ? "bg-neutral-800 text-amaranth"
-                          : "text-neutral-100 hover:bg-neutral-800"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
+              <div className="flex justify-end border-b border-neutral-800 px-3 py-3">
+                <ConnectWalletButton />
               </div>
-            )}
-          </div>
 
-          <ConnectWalletButton />
+              {NAV.map((item) => {
+                const active = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center px-4 py-2.5 text-sm transition ${
+                      active
+                        ? "bg-neutral-800 text-amaranth"
+                        : "text-neutral-100 hover:bg-neutral-800"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </header>

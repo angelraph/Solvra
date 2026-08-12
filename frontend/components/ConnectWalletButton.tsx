@@ -8,6 +8,16 @@ function shortenAddress(address: string): string {
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
+// wagmi's injected() connector falls back to the literal name "Injected"
+// whenever the browser's provider doesn't announce itself via EIP-6963 —
+// common in mobile in-app browsers and some older wallet injections. Users
+// don't know what "Injected" means, so show the generic "Wallet" label
+// instead; a real wallet name (MetaMask, Rabby, OKX Wallet, ...) still shows
+// as-is since that's actually useful information.
+function connectorLabel(name: string): string {
+  return name.toLowerCase() === "injected" ? "Wallet" : name;
+}
+
 /**
  * Lists every wallet extension actually installed in the browser — MetaMask,
  * OKX Wallet, Rabby, etc. — as separate choices, via wagmi's built-in
@@ -62,7 +72,7 @@ export function ConnectWalletButton() {
             disabled={isPending}
             className="rounded-lg bg-amaranth px-4 py-2 text-sm font-medium text-neutral-950 transition hover:bg-blush disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending ? "Connecting…" : `Connect ${only.name}`}
+            {isPending ? "Connecting…" : `Connect ${connectorLabel(only.name)}`}
           </button>
           {displayError && <span className="max-w-64 text-right text-xs text-red-400">{displayError.message}</span>}
         </div>
@@ -89,7 +99,7 @@ export function ConnectWalletButton() {
                 }}
                 className="flex w-full items-center px-4 py-2.5 text-left text-sm text-neutral-100 transition hover:bg-neutral-800"
               >
-                {connector.name}
+                {connectorLabel(connector.name)}
               </button>
             ))}
           </div>
