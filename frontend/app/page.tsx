@@ -76,7 +76,11 @@ export default function HomePage() {
     <div>
       {/* ── Hero — dark, the sphere represents the product itself: many
           private signals, one verified answer. ── */}
-      <section className="relative overflow-hidden border-b border-neutral-800 bg-shark">
+      {/* Deliberately no bg-shark here — the body element behind it already
+          is that color, and painting it again on this section would block
+          the site-wide ambient sphere (app/layout.tsx) from ever showing
+          through the one place it matters most: right behind this text. */}
+      <section className="relative overflow-hidden border-b border-neutral-800">
         {/* The sphere itself now lives site-wide in app/layout.tsx
             (components/AmbientSphere.tsx) — fading in and out behind every
             page, not just this one. */}
@@ -196,7 +200,9 @@ export default function HomePage() {
       </section>
 
       {/* ── Section: clear next step for every kind of visitor. ── */}
-      <section className="bg-shark py-24">
+      {/* No bg-shark — same reasoning as the hero, lets the ambient sphere
+          show through instead of being painted over. */}
+      <section className="py-24">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             What do you want to do?
@@ -264,7 +270,8 @@ export default function HomePage() {
       </section>
 
       {/* ── Section: the live proof. ── */}
-      <section className="bg-shark py-24">
+      {/* No bg-shark here either, same reasoning. */}
+      <section className="py-24">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             Live on Coston2, not just a diagram
