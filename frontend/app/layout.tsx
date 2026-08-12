@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/SiteHeader";
+import { AmbientSphere } from "@/components/AmbientSphere";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -32,10 +33,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           rel="stylesheet"
         />
       </head>
-      <body className="flex min-h-full flex-col bg-shark text-neutral-100">
+      <body className="relative flex min-h-full flex-col bg-shark text-neutral-100">
         <Providers>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
+          {/* Mounted once here, not per-page — a single WebGL context that
+              persists across navigation instead of tearing down and
+              recreating on every route change. */}
+          <AmbientSphere />
+          <div className="relative z-10 flex min-h-full flex-1 flex-col">
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>

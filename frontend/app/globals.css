@@ -48,3 +48,27 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
+
+/* Site-wide ambient sphere (components/AmbientSphere.tsx) — a slow breathing
+ * fade rather than a constant presence, so it reads as ambient rather than
+ * as a second, competing hero visual on every page. Peaks well under full
+ * opacity even at its brightest — it's meant to be noticed, not stared at. */
+@keyframes ambient-fade {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.22;
+  }
+}
+
+.animate-ambient-fade {
+  animation: ambient-fade 16s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ambient-fade {
+    animation: none;
+    opacity: 0.12;
+  }
+}
