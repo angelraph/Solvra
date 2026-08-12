@@ -30,7 +30,7 @@ function formatUnits(value: bigint, decimals: number): number {
 }
 
 export default function FassetsPage() {
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const [agentVault, setAgentVault] = useState<string>(EXAMPLE_AGENT_VAULT);
   const [fdcXrpReserve, setFdcXrpReserve] = useState("500");
   const [privateReserve, setPrivateReserve] = useState("1000");

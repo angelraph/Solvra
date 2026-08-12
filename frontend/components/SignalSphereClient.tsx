@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, Suspense, useEffect, useState, type ReactNode } from "react";
+import { Component, Suspense, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 
 const SignalSphere3D = dynamic(() => import("./SignalSphere").then((m) => m.SignalSphere), {
@@ -56,7 +56,6 @@ class SphereErrorBoundary extends Component<{ children: ReactNode; fallback: Rea
     return { hasError: true };
   }
   componentDidCatch(error: unknown) {
-    // eslint-disable-next-line no-console
     console.warn("SignalSphere failed to render, falling back to CSS visual:", error);
   }
   render() {
@@ -77,18 +76,14 @@ function hasWebGL(): boolean {
  * static CSS visual in the same palette otherwise. Never a blank gap,
  * never a frozen/broken page. */
 export function SignalSphereClient() {
-  const [webglOk, setWebglOk] = useState<boolean | null>(null);
+  // This component only ever renders client-side (see the ssr:false dynamic
+  // import above), so `document` is always available here — no need for an
+  // effect-plus-loading-state dance to defer this to after mount. A lazy
+  // useState initializer runs exactly once, safely.
+  const [webglOk] = useState(() => hasWebGL());
 
-  useEffect(() => {
-    setWebglOk(hasWebGL());
-  }, []);
-
-  if (webglOk === false) {
+  if (!webglOk) {
     return <SignalGlowFallback />;
-  }
-
-  if (webglOk === null) {
-    return null;
   }
 
   return (

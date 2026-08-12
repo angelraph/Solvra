@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import type { Points as ThreePoints } from "three";
@@ -15,10 +15,14 @@ import type { Points as ThreePoints } from "three";
 function SignalCloud() {
   const pointsRef = useRef<ThreePoints>(null);
 
-  // A sphere of points, generated once. Two populations: most sit at the
-  // "private signal" radius, a smaller "converged" set sits close to the
-  // center — the resting state of "many inputs, one proof."
-  const { positions, colors } = useMemo(() => {
+  // A sphere of points, generated once via useState's lazy initializer —
+  // not useMemo, which React's purity rules correctly flag for impure work
+  // like Math.random(): React may invoke a memo callback more than once
+  // per commit, but a lazy useState initializer is guaranteed to run
+  // exactly once for the component's lifetime. Two populations: most sit
+  // at the "private signal" radius, a smaller "converged" set sits close
+  // to the center — the resting state of "many inputs, one proof."
+  const [{ positions, colors }] = useState(() => {
     const count = 1400;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
@@ -49,7 +53,7 @@ function SignalCloud() {
     }
 
     return { positions, colors };
-  }, []);
+  });
 
   useFrame((_, delta) => {
     if (!pointsRef.current) return;
