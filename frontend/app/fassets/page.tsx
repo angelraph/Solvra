@@ -99,8 +99,10 @@ export default function FassetsPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <p className="text-sm font-medium uppercase tracking-widest text-blush">Flagship · Bounty 1 + 2</p>
-      <h1 className="mt-2 text-3xl font-semibold text-neutral-50">FAssets Agent Solvency Attestation</h1>
-      <p className="mt-3 text-neutral-400">
+      <h1 className="mt-3 font-heading text-4xl font-black tracking-tight text-white sm:text-5xl">
+        FAssets Agent Solvency Attestation
+      </h1>
+      <p className="mt-4 text-lg text-neutral-400">
         Prove a FAssets agent meets a collateral-adequacy policy without publishing its full treasury.
       </p>
 

@@ -29,8 +29,10 @@ export default function RelyingPartyPage() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
       <p className="text-sm font-medium uppercase tracking-widest text-blush">Consumption side</p>
-      <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Relying Party Gate</h1>
-      <p className="mt-3 text-neutral-400">
+      <h1 className="mt-3 font-heading text-4xl font-black tracking-tight text-white sm:text-5xl">
+        Relying Party Gate
+      </h1>
+      <p className="mt-4 text-lg text-neutral-400">
         This is what a lender, insurer, or governance dashboard does with Solvra: one read call against{" "}
         <a href={explorerAddr(CONTRACTS.attestationRegistry.address)} target="_blank" rel="noreferrer" className="text-blush hover:underline">
           AttestationRegistry

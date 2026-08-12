@@ -14,8 +14,8 @@ export default function DevelopersPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <p className="text-sm font-medium uppercase tracking-widest text-blush">Ask Without Seeing</p>
-      <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Build on Solvra</h1>
-      <p className="mt-3 text-neutral-400">
+      <h1 className="mt-3 font-heading text-4xl font-black tracking-tight text-white sm:text-5xl">Build on Solvra</h1>
+      <p className="mt-4 text-lg text-neutral-400">
         There&apos;s no hosted REST API yet. That would just be a thin wrapper around the calls below, and it felt
         more honest to show the real, already-deployed integration surface than a mocked endpoint that doesn&apos;t
         exist. Every snippet here is a real call against contracts already live on Coston2.

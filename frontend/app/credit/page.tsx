@@ -66,8 +66,10 @@ export default function CreditPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <p className="text-sm font-medium uppercase tracking-widest text-blush">Secondary vertical · same engine</p>
-      <h1 className="mt-2 text-3xl font-semibold text-neutral-50">Consumer Credit Line Eligibility</h1>
-      <p className="mt-3 text-neutral-400">
+      <h1 className="mt-3 font-heading text-4xl font-black tracking-tight text-white sm:text-5xl">
+        Consumer Credit Line Eligibility
+      </h1>
+      <p className="mt-4 text-lg text-neutral-400">
         The identical policy engine that evaluates FAssets agents, applied to a wallet instead. Proof this is a
         general protocol, not a single-purpose lending app. See{" "}
         <code className="text-neutral-300">evaluateReserveAdequacyPolicy</code> in{" "}

@@ -73,8 +73,10 @@ export default function TrustPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <p className="text-sm font-medium uppercase tracking-widest text-blush">Trust Center</p>
-      <h1 className="mt-2 text-3xl font-semibold text-neutral-50">What&apos;s real, what&apos;s pending</h1>
-      <p className="mt-3 text-neutral-400">
+      <h1 className="mt-3 font-heading text-4xl font-black tracking-tight text-white sm:text-5xl">
+        What&apos;s real, what&apos;s pending
+      </h1>
+      <p className="mt-4 text-lg text-neutral-400">
         Per the hackathon&apos;s own checklist: be clear about what is real, mocked, trusted, or still incomplete. No
         part of Solvra tries to look more finished than it is.
       </p>
